@@ -39,7 +39,7 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     @ToString.Exclude
-    private Set<Genre> genreData;
+    private Set<Genre> genres;
 
     @ManyToOne
     private Director director;
