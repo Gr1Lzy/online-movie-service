@@ -9,7 +9,7 @@ import java.time.Year;
 import java.util.Set;
 
 @Data
-public class MovieCreateDto {
+public class MovieSaveDto {
     @NotBlank(message = "Title is required")
     private String title;
 

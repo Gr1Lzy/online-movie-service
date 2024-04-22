@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class GenreCreateDto {
+public class GenreSaveDto {
     @NotBlank(message = "Genre name is required")
     private String name;
 }

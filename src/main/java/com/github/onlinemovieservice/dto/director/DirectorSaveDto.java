@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class DirectorCreateDto {
+public class DirectorSaveDto {
     @NotBlank(message = "First name is required")
     private String firstName;
 
