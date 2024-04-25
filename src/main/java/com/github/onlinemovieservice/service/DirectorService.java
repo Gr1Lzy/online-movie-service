@@ -6,9 +6,9 @@ import com.github.onlinemovieservice.dto.director.DirectorSaveDto;
 import java.util.List;
 
 public interface DirectorService {
-    DirectorDto save(DirectorSaveDto director);
-    DirectorDto update(Long id, DirectorSaveDto director);
+    DirectorDto save(DirectorSaveDto directorDto);
+    DirectorDto update(Long id, DirectorSaveDto directorDto);
     List<DirectorDto> findAll();
     DirectorDto findById(Long id);
-    DirectorDto deleteById(Long id);
+    void deleteById(Long id);
 }

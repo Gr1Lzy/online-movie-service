@@ -6,9 +6,9 @@ import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import java.util.List;
 
 public interface MovieService {
-    MovieDto save(MovieDto movie);
-    MovieDto update(Long id, MovieSaveDto genre);
+    MovieDto save(MovieSaveDto movieDto);
+    MovieDto update(Long id, MovieSaveDto movieDto);
     List<MovieDto> findAll();
     MovieDto findById(Long id);
-    MovieDto deleteById(Long id);
+    void deleteById(Long id);
 }
