@@ -2,6 +2,7 @@ package com.github.onlinemovieservice.service.impl;
 
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
+import com.github.onlinemovieservice.dto.movie.MovieWithoutGenreDto;
 import com.github.onlinemovieservice.model.Movie;
 import com.github.onlinemovieservice.repository.MovieRepository;
 import com.github.onlinemovieservice.service.MovieService;
@@ -35,6 +36,8 @@ public class MovieServiceImpl implements MovieService {
         return modelMapper.map(movieRepository.save(updateMovie), MovieDto.class);
     }
 
+
+
     @Override
     public List<MovieDto> findAll() {
         return movieRepository.findAll()
@@ -48,6 +51,14 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = getOrThrow(id);
 
         return modelMapper.map(movie, MovieDto.class);
+    }
+
+    @Override
+    public List<MovieWithoutGenreDto> findByGenre(String name) {
+        return movieRepository.findAll().stream()
+                .filter(movie -> movie.getGenres().stream().anyMatch(genre -> genre.getName().equals(name)))
+                .map(element -> modelMapper.map(element, MovieWithoutGenreDto.class))
+                .toList();
     }
 
     @Override
