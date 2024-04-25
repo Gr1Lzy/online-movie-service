@@ -3,11 +3,11 @@ package com.github.onlinemovieservice.dto.movie;
 import com.github.onlinemovieservice.model.Director;
 import lombok.Data;
 
-import java.time.Year;
+import java.util.Date;
 
 @Data
 public class MovieWithoutGenreDto {
     private String title;
-    private Year year;
+    private Date releaseDate;
     private Director director;
 }

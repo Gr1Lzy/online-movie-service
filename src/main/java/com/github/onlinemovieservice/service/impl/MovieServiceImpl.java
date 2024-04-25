@@ -36,8 +36,6 @@ public class MovieServiceImpl implements MovieService {
         return modelMapper.map(movieRepository.save(updateMovie), MovieDto.class);
     }
 
-
-
     @Override
     public List<MovieDto> findAll() {
         return movieRepository.findAll()

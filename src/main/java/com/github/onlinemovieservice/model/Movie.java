@@ -3,9 +3,8 @@ package com.github.onlinemovieservice.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-import java.time.Year;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -21,15 +20,14 @@ public class Movie {
     private String title;
 
     @Column(nullable = false)
-    private Year year;
+    @Temporal(TemporalType.DATE)
+    private Date releaseDate;
 
     @ManyToMany
-    @JoinTable(
-            name = "movies_genres",
+    @JoinTable(name = "movies_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    @ToString.Exclude
     private Set<Genre> genres;
 
     @ManyToOne

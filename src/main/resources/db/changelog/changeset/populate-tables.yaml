@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: populate_director_table
+      author: Andrii_Kolomoiets
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO directors (first_name, last_name) VALUES
+              ('Christopher', 'Nolan'),
+              ('Quentin', 'Tarantino'),
+              ('Steven', 'Spielberg');
+  - changeSet:
+      id: populate_genre_table
+      author: Andrii_Kolomoiets
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO genres (name) VALUES
+              ('Action'),
+              ('Drama'),
+              ('Comedy');
+  - changeSet:
+      id: populate_movie_table
+      author: Andrii_Kolomoiets
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO movies (title, release_date, director_id) VALUES
+              ('Inception', '2010-07-16', 1),
+              ('Pulp Fiction', '1994-10-14', 2),
+              ('Jurassic Park', '1993-06-11', 3);
+  - changeSet:
+      id: populate_movies_genres_table
+      author: Andrii_Kolomoiets
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO movies_genres (movie_id, genre_id) VALUES
+              (1, 1), -- Inception - Action
+              (1, 2), -- Inception - Drama
+              (2, 2), -- Pulp Fiction - Drama
+              (2, 3), -- Pulp Fiction - Comedy
+              (3, 1); -- Jurassic Park - Action
