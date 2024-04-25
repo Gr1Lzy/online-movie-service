@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,5 +19,5 @@ public class Genre {
     private String name;
 
     @ManyToMany(mappedBy = "genres", cascade = CascadeType.REMOVE)
-    private Set<Movie> movies;
+    private List<Movie> movies;
 }

@@ -55,8 +55,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieWithoutGenreDto> findByGenre(String name) {
-        return movieRepository.findAll().stream()
-                .filter(movie -> movie.getGenres().stream().anyMatch(genre -> genre.getName().equals(name)))
+        return movieRepository.findAllByGenreName(name)
+                .stream()
                 .map(element -> modelMapper.map(element, MovieWithoutGenreDto.class))
                 .toList();
     }
