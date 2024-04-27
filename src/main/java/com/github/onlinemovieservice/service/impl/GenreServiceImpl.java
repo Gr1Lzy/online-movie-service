@@ -2,11 +2,11 @@ package com.github.onlinemovieservice.service.impl;
 
 import com.github.onlinemovieservice.dto.genre.GenreDto;
 import com.github.onlinemovieservice.dto.genre.GenreSaveDto;
+import com.github.onlinemovieservice.mapper.GenreMapper;
 import com.github.onlinemovieservice.model.Genre;
 import com.github.onlinemovieservice.repository.GenreRepository;
 import com.github.onlinemovieservice.service.GenreService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,30 +16,30 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
-    private final ModelMapper modelMapper;
+    private final GenreMapper genreMapper;
 
     @Override
     public GenreDto save(GenreSaveDto genreDto) {
-        Genre newGenre = modelMapper.map(genreDto, Genre.class);
+        Genre newGenre = genreMapper.toModel(genreDto);
 
-        return modelMapper.map(genreRepository.save(newGenre), GenreDto.class);
+        return genreMapper.toDto(genreRepository.save(newGenre));
     }
 
     @Override
     public GenreDto update(Long id, GenreSaveDto genreDto) {
         getOrThrow(id);
 
-        Genre updateGenre = modelMapper.map(genreDto, Genre.class);
+        Genre updateGenre = genreMapper.toModel(genreDto);
         updateGenre.setId(id);
 
-        return modelMapper.map(genreRepository.save(updateGenre), GenreDto.class);
+        return genreMapper.toDto(genreRepository.save(updateGenre));
     }
 
     @Override
     public List<GenreDto> findAll() {
         return genreRepository.findAll()
                 .stream()
-                .map(element -> modelMapper.map(element, GenreDto.class))
+                .map(genreMapper::toDto)
                 .toList();
     }
 
@@ -47,7 +47,7 @@ public class GenreServiceImpl implements GenreService {
     public GenreDto findById(Long id) {
         Genre genre = getOrThrow(id);
 
-        return modelMapper.map(genre, GenreDto.class);
+        return genreMapper.toDto(genre);
     }
 
     @Override

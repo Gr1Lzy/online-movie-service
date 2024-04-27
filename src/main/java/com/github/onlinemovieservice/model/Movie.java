@@ -1,7 +1,9 @@
 package com.github.onlinemovieservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -11,6 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "movies")
+@RequiredArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,7 @@ public class Movie {
     private Date releaseDate;
 
     @ManyToMany
+    @JsonManagedReference
     @JoinTable(name = "movies_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")

@@ -3,44 +3,67 @@ package com.github.onlinemovieservice.service.impl;
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import com.github.onlinemovieservice.dto.movie.MovieWithoutGenreDto;
+import com.github.onlinemovieservice.mapper.MovieMapper;
+import com.github.onlinemovieservice.model.Director;
+import com.github.onlinemovieservice.model.Genre;
 import com.github.onlinemovieservice.model.Movie;
+import com.github.onlinemovieservice.repository.DirectorRepository;
+import com.github.onlinemovieservice.repository.GenreRepository;
 import com.github.onlinemovieservice.repository.MovieRepository;
 import com.github.onlinemovieservice.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
-    private final ModelMapper modelMapper;
+    private final MovieMapper movieMapper;
+    private final GenreRepository genreRepository;
+    private final DirectorRepository directorRepository;
 
     @Override
     public MovieDto save(MovieSaveDto movieDto) {
-        Movie newMovie = modelMapper.map(movieDto, Movie.class);
+        Set<Long> genresIds = movieDto.getGenresIds();
+        Long directorId = movieDto.getDirectorId();
 
-        return modelMapper.map(movieRepository.save(newMovie), MovieDto.class);
+        Set<Genre> genres = genresIds.stream()
+                .map(genreRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+
+        Director director = directorRepository.findById(directorId)
+                .orElseThrow(() -> new NoSuchElementException("Director with id %d not found.".formatted(directorId)));
+
+        Movie newMovie = movieMapper.toModel(movieDto);
+        newMovie.setDirector(director);
+        newMovie.setGenres(genres);
+
+        return movieMapper.toDto(movieRepository.save(newMovie));
     }
 
     @Override
     public MovieDto update(Long id, MovieSaveDto movieDto) {
         getOrThrow(id);
 
-        Movie updateMovie = modelMapper.map(movieDto, Movie.class);
+        Movie updateMovie = movieMapper.toModel(movieDto);
         updateMovie.setId(id);
 
-        return modelMapper.map(movieRepository.save(updateMovie), MovieDto.class);
+        return movieMapper.toDto(movieRepository.save(updateMovie));
     }
 
     @Override
     public List<MovieDto> findAll() {
         return movieRepository.findAll()
                 .stream()
-                .map(element -> modelMapper.map(element, MovieDto.class))
+                .map(movieMapper::toDto)
                 .toList();
     }
 
@@ -48,14 +71,14 @@ public class MovieServiceImpl implements MovieService {
     public MovieDto findById(Long id) {
         Movie movie = getOrThrow(id);
 
-        return modelMapper.map(movie, MovieDto.class);
+        return movieMapper.toDto(movie);
     }
 
     @Override
     public List<MovieWithoutGenreDto> findByGenre(String name) {
         return movieRepository.findAllByGenreName(name)
                 .stream()
-                .map(element -> modelMapper.map(element, MovieWithoutGenreDto.class))
+                .map(movieMapper::toModelWithoutGenre)
                 .toList();
     }
 

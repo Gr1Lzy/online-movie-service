@@ -2,11 +2,11 @@ package com.github.onlinemovieservice.service.impl;
 
 import com.github.onlinemovieservice.dto.director.DirectorDto;
 import com.github.onlinemovieservice.dto.director.DirectorSaveDto;
+import com.github.onlinemovieservice.mapper.DirectorMapper;
 import com.github.onlinemovieservice.model.Director;
 import com.github.onlinemovieservice.repository.DirectorRepository;
 import com.github.onlinemovieservice.service.DirectorService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,30 +16,30 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class DirectorServiceImpl implements DirectorService {
     private final DirectorRepository directorRepository;
-    private final ModelMapper modelMapper;
+    private final DirectorMapper directorMapper;
 
     @Override
     public DirectorDto save(DirectorSaveDto directorDto) {
-        Director newDirector = modelMapper.map(directorDto, Director.class);
+        Director newDirector = directorMapper.toModel(directorDto);
 
-        return modelMapper.map(directorRepository.save(newDirector), DirectorDto.class);
+        return directorMapper.toDto(directorRepository.save(newDirector));
     }
 
     @Override
     public DirectorDto update(Long id, DirectorSaveDto directorDto) {
         getOrThrow(id);
 
-        Director updateDirector = modelMapper.map(directorDto, Director.class);
+        Director updateDirector = directorMapper.toModel(directorDto);
         updateDirector.setId(id);
 
-        return modelMapper.map(directorRepository.save(updateDirector), DirectorDto.class);
+        return directorMapper.toDto(directorRepository.save(updateDirector));
     }
 
     @Override
     public List<DirectorDto> findAll() {
         return directorRepository.findAll()
                 .stream()
-                .map(element -> modelMapper.map(element, DirectorDto.class))
+                .map(directorMapper::toDto)
                 .toList();
     }
 
@@ -47,7 +47,7 @@ public class DirectorServiceImpl implements DirectorService {
     public DirectorDto findById(Long id) {
         Director director = getOrThrow(id);
 
-        return modelMapper.map(director, DirectorDto.class);
+        return directorMapper.toDto(director);
     }
 
     @Override

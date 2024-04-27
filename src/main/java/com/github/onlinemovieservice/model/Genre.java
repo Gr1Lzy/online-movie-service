@@ -1,9 +1,8 @@
 package com.github.onlinemovieservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,6 +10,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "genres")
+@RequiredArgsConstructor
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,11 @@ public class Genre {
     @Column(nullable = false)
     private String name;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "genres")
-    @ToString.Exclude
     private List<Movie> movies;
+
+    public Genre(Long id) {
+        this.id = id;
+    }
 }
