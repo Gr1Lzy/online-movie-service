@@ -21,6 +21,6 @@ public class MovieSaveDto {
     @NotEmpty(message = "Genres are required")
     private Set<Long> genresIds;
 
-    @NotNull(message = "Director is required")
+    @NotNull(message = "Director is required or cannot be null")
     private Long directorId;
 }
