@@ -22,8 +22,4 @@ public class Genre {
     @JsonBackReference
     @ManyToMany(mappedBy = "genres")
     private List<Movie> movies;
-
-    public Genre(Long id) {
-        this.id = id;
-    }
 }

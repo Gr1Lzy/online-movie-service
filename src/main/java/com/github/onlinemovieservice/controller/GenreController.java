@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/genre")
+@RequestMapping("api/genre")
 public class GenreController {
     private final GenreService genreService;
 

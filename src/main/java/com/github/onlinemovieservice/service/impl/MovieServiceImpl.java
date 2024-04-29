@@ -20,33 +20,34 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
-    private final GenreRepository genreRepository;
     private final DirectorRepository directorRepository;
+    private final GenreRepository genreRepository;
 
     @Override
     public MovieDto save(MovieSaveDto movieDto) {
-        Set<Long> genresIds = movieDto.getGenresIds();
-        Long directorId = movieDto.getDirectorId();
+        Movie movie = movieMapper.toModel(movieDto);
+        Director director = directorRepository.findById(movieDto.getDirectorId())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Director with ID " + movieDto.getDirectorId() + " not found"));
 
-        Set<Genre> genres = genresIds.stream()
+        Set<Genre> genres = movieDto.getGenresIds()
+                .stream()
                 .map(genreRepository::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());
 
-        Director director = directorRepository.findById(directorId)
-                .orElseThrow(() -> new NoSuchElementException("Director with id %d not found.".formatted(directorId)));
+        movie.setDirector(director);
+        movie.setGenres(genres);
 
-        Movie newMovie = movieMapper.toModel(movieDto);
-        newMovie.setDirector(director);
-        newMovie.setGenres(genres);
-
-        return movieMapper.toDto(movieRepository.save(newMovie));
+        return movieMapper.toDto(movieRepository.save(movie));
     }
 
     @Override

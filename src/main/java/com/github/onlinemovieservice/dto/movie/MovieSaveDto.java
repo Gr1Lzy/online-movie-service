@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -16,7 +16,7 @@ public class MovieSaveDto {
 
     @NotNull(message = "Date is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date releaseDate;
+    private LocalDate releaseDate;
 
     @NotEmpty(message = "Genres are required")
     private Set<Long> genresIds;

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -23,8 +24,7 @@ public class Movie {
     private String title;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date releaseDate;
+    private LocalDate releaseDate;
 
     @ManyToMany
     @JsonManagedReference
@@ -35,5 +35,6 @@ public class Movie {
     private Set<Genre> genres;
 
     @ManyToOne
+    @JoinColumn(name = "director_id")
     private Director director;
 }
