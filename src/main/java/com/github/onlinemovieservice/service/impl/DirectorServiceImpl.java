@@ -18,7 +18,6 @@ import java.util.NoSuchElementException;
 public class DirectorServiceImpl implements DirectorService {
     private final DirectorRepository directorRepository;
     private final DirectorMapper directorMapper;
-
     @Override
     public DirectorDto save(DirectorSaveDto directorDto) {
         getIfDirectorExist(directorDto);
@@ -65,6 +64,8 @@ public class DirectorServiceImpl implements DirectorService {
                 .orElseThrow(() -> new NoSuchElementException("Director with id %d not found.".formatted(id)));
     }
 
+
+
     public void getIfDirectorExist(DirectorSaveDto directorDto) {
         boolean directorExist = directorRepository.existsDirectorByFirstNameAndLastName(
                 directorDto.getFirstName(), directorDto.getLastName());
@@ -75,4 +76,6 @@ public class DirectorServiceImpl implements DirectorService {
                             directorDto.getFirstName(), directorDto.getLastName()));
         }
     }
+
+
 }

@@ -20,4 +20,7 @@ public class Director {
 
     @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false)
+    private String nationality;
 }

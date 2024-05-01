@@ -10,4 +10,7 @@ public class DirectorSaveDto {
 
     @NotBlank(message = "Last name is required")
     private String lastName;
+
+    @NotBlank(message = "Nationality is required")
+    private String nationality;
 }

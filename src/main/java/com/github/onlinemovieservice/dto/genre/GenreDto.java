@@ -6,4 +6,5 @@ import lombok.Data;
 public class GenreDto {
     private Long id;
     private String name;
+
 }

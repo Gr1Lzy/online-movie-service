@@ -17,7 +17,8 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class,
+    @ExceptionHandler({
+            IllegalArgumentException.class,
             HttpMessageNotReadableException.class,
             NoSuchElementException.class,
             DirectorAlreadyExistsException.class
