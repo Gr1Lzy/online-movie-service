@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +58,23 @@ public class GenreServiceImpl implements GenreService {
         genreRepository.deleteById(id);
     }
 
-    private Genre getOrThrow(Long id) {
+    public Genre getOrThrow(Long id) {
         return genreRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Genre with id %d not found.".formatted(id)));
+    }
+
+    public Set<Genre> getListOrThrow(Set<Long> genreIds) {
+        Set<Genre> genres = genreIds.stream()
+                .map(genreRepository::findById)
+                .filter(Optional::isPresent)
+
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+
+        if (genres.size() != genreIds.size()) {
+            throw new NoSuchElementException("One or more genres not found.");
+        }
+
+        return genres;
     }
 }

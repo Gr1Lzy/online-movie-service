@@ -19,4 +19,10 @@ public class GenreController {
     public GenreDto createGenre(@Validated @RequestBody GenreSaveDto genreDto) {
         return genreService.save(genreDto);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMovie(@PathVariable Long id) {
+        genreService.deleteById(id);
+    }
 }

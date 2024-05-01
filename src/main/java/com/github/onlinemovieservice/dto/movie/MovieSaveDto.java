@@ -11,14 +11,14 @@ import java.util.Set;
 
 @Data
 public class MovieSaveDto {
-    @NotBlank(message = "Title is required")
+    @NotBlank(message = "Title is required or cannot be null")
     private String title;
 
-    @NotNull(message = "Date is required")
+    @NotNull(message = "Date is required or cannot be null")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
-    @NotEmpty(message = "Genres are required")
+    @NotEmpty(message = "Genres are required or cannot be null")
     private Set<Long> genresIds;
 
     @NotNull(message = "Director is required or cannot be null")

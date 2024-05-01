@@ -2,6 +2,7 @@ package com.github.onlinemovieservice.service.impl;
 
 import com.github.onlinemovieservice.dto.director.DirectorDto;
 import com.github.onlinemovieservice.dto.director.DirectorSaveDto;
+import com.github.onlinemovieservice.exception.DirectorAlreadyExistsException;
 import com.github.onlinemovieservice.mapper.DirectorMapper;
 import com.github.onlinemovieservice.model.Director;
 import com.github.onlinemovieservice.repository.DirectorRepository;
@@ -20,6 +21,8 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Override
     public DirectorDto save(DirectorSaveDto directorDto) {
+        getIfDirectorExist(directorDto);
+
         Director newDirector = directorMapper.toModel(directorDto);
 
         return directorMapper.toDto(directorRepository.save(newDirector));
@@ -27,9 +30,11 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Override
     public DirectorDto update(Long id, DirectorSaveDto directorDto) {
-        getOrThrow(id);
+        getDirectorOrThrow(id);
+        getIfDirectorExist(directorDto);
 
         Director updateDirector = directorMapper.toModel(directorDto);
+
         updateDirector.setId(id);
 
         return directorMapper.toDto(directorRepository.save(updateDirector));
@@ -45,7 +50,7 @@ public class DirectorServiceImpl implements DirectorService {
 
     @Override
     public DirectorDto findById(Long id) {
-        Director director = getOrThrow(id);
+        Director director = getDirectorOrThrow(id);
 
         return directorMapper.toDto(director);
     }
@@ -55,8 +60,19 @@ public class DirectorServiceImpl implements DirectorService {
         directorRepository.deleteById(id);
     }
 
-    private Director getOrThrow(Long id) {
+    public Director getDirectorOrThrow(Long id) {
         return directorRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Director with id %d not found.".formatted(id)));
+    }
+
+    public void getIfDirectorExist(DirectorSaveDto directorDto) {
+        boolean directorExist = directorRepository.existsDirectorByFirstNameAndLastName(
+                directorDto.getFirstName(), directorDto.getLastName());
+
+        if (directorExist) {
+            throw new DirectorAlreadyExistsException(
+                    "Director %s %s already exists.".formatted(
+                            directorDto.getFirstName(), directorDto.getLastName()));
+        }
     }
 }

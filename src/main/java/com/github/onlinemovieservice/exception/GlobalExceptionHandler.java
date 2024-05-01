@@ -11,11 +11,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.NoSuchElementException;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({IllegalArgumentException.class,
+            HttpMessageNotReadableException.class,
+            NoSuchElementException.class,
+            DirectorAlreadyExistsException.class
+    })
     protected ResponseEntity<Object> handleBadRequestException(Exception e) {
         log.warn("Bad request exception thrown: {}", e.getMessage());
         return buildErrorResponse(e.getMessage());

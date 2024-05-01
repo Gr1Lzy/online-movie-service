@@ -3,49 +3,32 @@ package com.github.onlinemovieservice.service.impl;
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import com.github.onlinemovieservice.dto.movie.MovieWithoutGenreDto;
+import com.github.onlinemovieservice.exception.EntityNotFoundException;
 import com.github.onlinemovieservice.mapper.MovieMapper;
-import com.github.onlinemovieservice.model.Director;
-import com.github.onlinemovieservice.model.Genre;
 import com.github.onlinemovieservice.model.Movie;
-import com.github.onlinemovieservice.repository.DirectorRepository;
-import com.github.onlinemovieservice.repository.GenreRepository;
 import com.github.onlinemovieservice.repository.MovieRepository;
 import com.github.onlinemovieservice.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
-    private final DirectorRepository directorRepository;
-    private final GenreRepository genreRepository;
+    private final DirectorServiceImpl directorService;
+    private final GenreServiceImpl genreService;
 
     @Override
     public MovieDto save(MovieSaveDto movieDto) {
-        Movie movie = movieMapper.toModel(movieDto);
-        Director director = directorRepository.findById(movieDto.getDirectorId())
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Director with ID " + movieDto.getDirectorId() + " not found"));
+        Movie newMovie = movieMapper.toModel(movieDto);
 
-        Set<Genre> genres = movieDto.getGenresIds()
-                .stream()
-                .map(genreRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+        newMovie.setDirector(directorService.getDirectorOrThrow(movieDto.getDirectorId()));
+        newMovie.setGenres(genreService.getListOrThrow(movieDto.getGenresIds()));
 
-        movie.setDirector(director);
-        movie.setGenres(genres);
-
-        return movieMapper.toDto(movieRepository.save(movie));
+        return movieMapper.toDto(movieRepository.save(newMovie));
     }
 
     @Override
@@ -53,7 +36,10 @@ public class MovieServiceImpl implements MovieService {
         getOrThrow(id);
 
         Movie updateMovie = movieMapper.toModel(movieDto);
+
         updateMovie.setId(id);
+        updateMovie.setDirector(directorService.getDirectorOrThrow(movieDto.getDirectorId()));
+        updateMovie.setGenres(genreService.getListOrThrow(movieDto.getGenresIds()));
 
         return movieMapper.toDto(movieRepository.save(updateMovie));
     }
@@ -86,8 +72,8 @@ public class MovieServiceImpl implements MovieService {
         movieRepository.deleteById(id);
     }
 
-    private Movie getOrThrow(Long id) {
+    public Movie getOrThrow(Long id) {
         return movieRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Movie with id %d not found.".formatted(id)));
+                .orElseThrow(() -> new EntityNotFoundException("Movie with id %d not found.".formatted(id)));
     }
 }
