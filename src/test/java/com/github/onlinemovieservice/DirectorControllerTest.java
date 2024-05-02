@@ -36,22 +36,25 @@ class DirectorControllerTest {
         DirectorSaveDto directorSaveDto = new DirectorSaveDto();
         directorSaveDto.setFirstName("Christopher");
         directorSaveDto.setLastName("Nolan");
+        directorSaveDto.setNationality("British");
 
         DirectorDto createdDirectorDto = new DirectorDto();
         createdDirectorDto.setId(1L);
         createdDirectorDto.setFirstName("Christopher");
         createdDirectorDto.setLastName("Nolan");
+        createdDirectorDto.setNationality("British");
 
         when(directorService.save(any(DirectorSaveDto.class))).thenReturn(createdDirectorDto);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/director")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstName\":\"Christopher\", \"lastName\":\"Nolan\"}")
+                        .content("{\"firstName\":\"Christopher\", \"lastName\":\"Nolan\", \"nationality\": \"British\"}")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Christopher"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Nolan"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Nolan"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nationality").value("British"));
     }
 
     @Test
@@ -60,22 +63,25 @@ class DirectorControllerTest {
         DirectorSaveDto directorSaveDto = new DirectorSaveDto();
         directorSaveDto.setFirstName("Quentin");
         directorSaveDto.setLastName("Tarantino");
+        directorSaveDto.setNationality("British");
 
         DirectorDto updatedDirectorDto = new DirectorDto();
         updatedDirectorDto.setId(directorId);
         updatedDirectorDto.setFirstName("Quentin");
         updatedDirectorDto.setLastName("Tarantino");
+        updatedDirectorDto.setNationality("American");
 
         when(directorService.update(eq(directorId), any(DirectorSaveDto.class))).thenReturn(updatedDirectorDto);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/director/{id}", directorId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"firstName\":\"Quentin\", \"lastName\":\"Tarantino\"}")
+                        .content("{\"firstName\":\"Quentin\", \"lastName\":\"Tarantino\", \"nationality\": \"American\"}")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(directorId))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("Quentin"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Tarantino"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value("Tarantino"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nationality").value("American"));
     }
 
     @Test

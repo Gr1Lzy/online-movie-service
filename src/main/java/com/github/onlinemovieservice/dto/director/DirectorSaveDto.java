@@ -11,5 +11,6 @@ public class DirectorSaveDto {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
+    @NotBlank(message = "Nationality cannot be empty")
     private String nationality;
 }

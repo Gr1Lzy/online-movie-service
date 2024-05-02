@@ -1,15 +1,11 @@
 package com.github.onlinemovieservice;
 
 import com.github.onlinemovieservice.controller.MovieController;
-import com.github.onlinemovieservice.dto.director.DirectorSearchParameters;
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import com.github.onlinemovieservice.model.Director;
 import com.github.onlinemovieservice.service.MovieService;
-import com.github.onlinemovieservice.service.impl.MovieServiceImpl;
-import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +18,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MovieController.class)
