@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class DirectorSearchParametersWithPageable {
+public class DirectorSearchParametersWithPageable implements DirectorParameters {
     private String firstName;
     private String lastName;
     private String nationality;

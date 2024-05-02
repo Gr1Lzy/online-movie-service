@@ -9,5 +9,6 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapperConfig.class)
 public interface GenreMapper {
     GenreDto toDto(Genre genre);
+
     Genre toModel(GenreSaveDto genreDto);
 }

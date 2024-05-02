@@ -7,7 +7,6 @@ databaseChangeLog:
             sql: |
               INSERT INTO directors (first_name, last_name, nationality) VALUES
               ('Christopher', 'Nolan', 'British'),
-              ('Christophero', 'Nolan', 'British'),
               ('Quentin', 'Tarantino', 'American'),
               ('Steven', 'Spielberg', 'American');
   - changeSet:
@@ -19,7 +18,9 @@ databaseChangeLog:
               INSERT INTO genres (name) VALUES
               ('Action'),
               ('Drama'),
-              ('Comedy');
+              ('Comedy'),
+              ('Thriller'),
+              ('Sci-Fi');
   - changeSet:
       id: populate_movie_table
       author: Andrii_Kolomoiets
@@ -28,13 +29,7 @@ databaseChangeLog:
             sql: |
               INSERT INTO movies (title, release_date, director_id) VALUES
               ('Inception', '2010-07-16', 1),
-              ('Inception', '2010-07-16', 1),
-              ('Inception', '2010-07-16', 1),
-              ('Inception', '2010-07-16', 1),
-              ('Inception', '2010-07-16', 1),
-              ('Pulp Fiction', '1994-10-14', 1),
               ('Pulp Fiction', '1994-10-14', 2),
-              ('Pulp Fiction', '1994-10-14', 3),
               ('Jurassic Park', '1993-06-11', 3);
   - changeSet:
       id: populate_movies_genres_table

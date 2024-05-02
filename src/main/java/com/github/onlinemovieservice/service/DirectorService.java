@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface DirectorService {
     DirectorDto save(DirectorSaveDto directorDto);
+
     DirectorDto update(Long id, DirectorSaveDto directorDto);
+
     List<DirectorDto> findAll();
+
     DirectorDto findById(Long id);
+
     void deleteById(Long id);
 }

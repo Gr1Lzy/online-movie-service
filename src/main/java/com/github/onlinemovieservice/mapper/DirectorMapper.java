@@ -9,5 +9,6 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapperConfig.class)
 public interface DirectorMapper {
     DirectorDto toDto(Director director);
+
     Director toModel(DirectorSaveDto directorDto);
 }

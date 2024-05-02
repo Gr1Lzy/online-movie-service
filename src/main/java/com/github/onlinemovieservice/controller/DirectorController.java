@@ -33,6 +33,7 @@ public class DirectorController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDirector(@PathVariable Long id) {
         directorService.deleteById(id);
     }

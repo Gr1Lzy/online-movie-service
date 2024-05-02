@@ -1,13 +1,16 @@
 package com.github.onlinemovieservice.controller;
 
+import com.github.onlinemovieservice.dto.director.DirectorSearchParameters;
 import com.github.onlinemovieservice.dto.director.DirectorSearchParametersWithPageable;
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import com.github.onlinemovieservice.dto.movie.MovieWithoutGenreDto;
 import com.github.onlinemovieservice.service.MovieService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -54,12 +57,14 @@ public class MovieController {
     }
 
     @PostMapping("/_list")
-    public Page<List<MovieWithoutGenreDto>> getListMovie(@RequestBody DirectorSearchParametersWithPageable directorSearchParameters) {
+    public Page<List<MovieWithoutGenreDto>> getListMovie(
+            @RequestBody DirectorSearchParametersWithPageable directorSearchParameters) {
         return movieService.search(directorSearchParameters);
     }
 
-    @PostMapping("/_report")
-    public void reportMovie() {
-        //todo write to file with Filtration
+    @PostMapping(value = "/_report", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void generateReport(HttpServletResponse httpServletResponse,
+                               @Validated @RequestBody DirectorSearchParameters directorSearchParameters) {
+        movieService.generateReport(httpServletResponse, directorSearchParameters);
     }
 }
