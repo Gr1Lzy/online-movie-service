@@ -2,24 +2,27 @@ package com.github.onlinemovieservice.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.onlinemovieservice.dto.director.DirectorSearchParameters;
+import com.github.onlinemovieservice.dto.director.DirectorSearchParametersWithPageable;
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import com.github.onlinemovieservice.dto.movie.MovieWithoutGenreDto;
 import com.github.onlinemovieservice.exception.EntityNotFoundException;
 import com.github.onlinemovieservice.exception.FileUploadException;
 import com.github.onlinemovieservice.mapper.MovieMapper;
+import com.github.onlinemovieservice.model.Director;
 import com.github.onlinemovieservice.model.Movie;
+import com.github.onlinemovieservice.repository.DirectorRepository;
 import com.github.onlinemovieservice.repository.MovieRepository;
-import com.github.onlinemovieservice.repository.spec.DirectorSpecification;
+import com.github.onlinemovieservice.repository.spec.impl.DirectorSpecificationBuilder;
 import com.github.onlinemovieservice.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,9 +31,10 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final DirectorServiceImpl directorService;
+    private final DirectorRepository directorRepository;
     private final GenreServiceImpl genreService;
     private final ObjectMapper objectMapper;
-    private final DirectorSpecification directorSpecification;
+    private final DirectorSpecificationBuilder directorSpecificationBuilder;
 
     @Override
     public MovieDto save(MovieSaveDto movieDto) {
@@ -96,18 +100,21 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieWithoutGenreDto> findByDirectorCriteria(DirectorSearchParameters directorSearchParameters) {
-        return movieRepository.findAll(directorSpecification.getSpecification(directorSearchParameters))
-                .stream()
-                .map(movieMapper::toModelWithoutGenre)
-                .toList();
+    public Page<List<MovieWithoutGenreDto>> search(DirectorSearchParametersWithPageable parameters) {
+        Specification<Director> directorSpecification = directorSpecificationBuilder.build(parameters);
+        PageRequest pageable = PageRequest.of(parameters.getPage(), parameters.getSize());
+        return directorRepository.findAll(directorSpecification, pageable)
+                .map(director -> {
+                    List<Movie> moviesByDirector = movieRepository.findAllByDirectorId(director.getId());
+                    return movieMapper.toDtoListWithoutGenre(moviesByDirector);
+                });
     }
 
     @Override
     public List<MovieWithoutGenreDto> findByGenre(String name) {
         return movieRepository.findAllByGenreName(name)
                 .stream()
-                .map(movieMapper::toModelWithoutGenre)
+                .map(movieMapper::toDtoWithoutGenre)
                 .toList();
     }
 

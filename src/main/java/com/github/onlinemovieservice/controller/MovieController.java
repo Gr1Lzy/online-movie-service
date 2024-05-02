@@ -1,18 +1,18 @@
 package com.github.onlinemovieservice.controller;
 
-import com.github.onlinemovieservice.dto.director.DirectorSearchParameters;
+import com.github.onlinemovieservice.dto.director.DirectorSearchParametersWithPageable;
 import com.github.onlinemovieservice.dto.movie.MovieDto;
 import com.github.onlinemovieservice.dto.movie.MovieSaveDto;
 import com.github.onlinemovieservice.dto.movie.MovieWithoutGenreDto;
 import com.github.onlinemovieservice.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -54,8 +54,8 @@ public class MovieController {
     }
 
     @PostMapping("/_list")
-    public List<MovieWithoutGenreDto> getListMovie(@RequestBody DirectorSearchParameters directorSearchParameters) {
-        return movieService.findByDirectorCriteria(directorSearchParameters);
+    public Page<List<MovieWithoutGenreDto>> getListMovie(@RequestBody DirectorSearchParametersWithPageable directorSearchParameters) {
+        return movieService.search(directorSearchParameters);
     }
 
     @PostMapping("/_report")
