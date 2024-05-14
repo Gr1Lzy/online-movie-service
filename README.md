@@ -79,4 +79,3 @@ entity3 - Genre.class який слугує классом для перевір
   "nationality": "British"
 }
 ```
->>>>>>> dev
