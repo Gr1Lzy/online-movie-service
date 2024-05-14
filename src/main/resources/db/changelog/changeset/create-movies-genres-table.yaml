@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_movies_genres_table
+      author: Andrii_Kolomoiets
+      changes:
+        - createTable:
+            tableName: movies_genres
+            columns:
+              - column:
+                  name: movie_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_id
+                    references: movies(id)
+              - column:
+                  name: genre_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_genre_id
+                    references: genres(id)

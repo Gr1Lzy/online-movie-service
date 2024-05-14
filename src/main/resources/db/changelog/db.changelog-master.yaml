@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-director-table.yaml
+  - include:
+      file: db/changelog/changeset/create-movie-table.yaml
+  - include:
+      file: db/changelog/changeset/create-genre-table.yaml
+  - include:
+      file: db/changelog/changeset/create-movies-genres-table.yaml
+  - include:
+      file: db/changelog/changeset/populate-tables.yaml

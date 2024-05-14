@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Inception",
+    "releaseDate": "2010-07-16",
+    "genresIds": [1, 2, 5],
+    "directorId": 1
+  },
+  {
+    "title": "The Dark Knight",
+    "releaseDate": "2008-07-18",
+    "genresIds": [1, 2],
+    "directorId": 1
+  },
+  {
+    "title": "Interstellar",
+    "releaseDate": "2014-11-07",
+    "genresIds": [2, 5],
+    "directorId": 1
+  },
+  {
+    "title": "Dunkirk",
+    "releaseDate": "2017-07-21",
+    "genresIds": [1, 2, 4],
+    "directorId": 1
+  },
+  {
+    "title": "Memento",
+    "releaseDate": "2000-09-05",
+    "genresIds": [2, 4],
+    "directorId": 1
+  },
+  {
+    "title": "Pulp Fiction",
+    "releaseDate": "1994-10-14",
+    "genresIds": [2, 4],
+    "directorId": 2
+  },
+  {
+    "title": "Kill Bill: Vol. 1",
+    "releaseDate": "2003-10-10",
+    "genresIds": [1, 2],
+    "directorId": 2
+  },
+  {
+    "title": "Kill Bill: Vol. 2",
+    "releaseDate": "2004-04-16",
+    "genresIds": [1, 2],
+    "directorId": 2
+  },
+  {
+    "title": "Django Unchained",
+    "releaseDate": "2012-12-25",
+    "genresIds": [1, 2],
+    "directorId": 2
+  },
+  {
+    "title": "Once Upon a Time in Hollywood",
+    "releaseDate": "2019-07-26",
+    "genresIds": [2, 3],
+    "directorId": 2
+  }
+]
