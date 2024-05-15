@@ -18,5 +18,7 @@ public interface MovieMapper {
 
     MovieWithoutGenreDto toDtoWithoutGenre(Movie movie);
 
+    List<MovieDto> toDtoList(List<Movie> movies);
+
     List<MovieWithoutGenreDto> toDtoListWithoutGenre(List<Movie> movies);
 }

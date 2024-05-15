@@ -8,9 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/genre")
+@RequestMapping("api/genres")
 public class GenreController {
     private final GenreService genreService;
 
@@ -24,5 +26,10 @@ public class GenreController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMovie(@PathVariable Long id) {
         genreService.deleteById(id);
+    }
+
+    @GetMapping
+    public List<GenreDto> getAll() {
+        return genreService.findAll();
     }
 }

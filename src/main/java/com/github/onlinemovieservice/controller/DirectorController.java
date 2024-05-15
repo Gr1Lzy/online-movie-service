@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/director")
+@RequestMapping("api/directors")
 public class DirectorController {
     private final DirectorService directorService;
 
