@@ -1,13 +1,18 @@
 spring:
-  liquibase:
-    enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: admin
-    password: root
-    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
+    show-sql: true
+  application:
+    name: OnlineMovieService
+
+logging:
+  level:
+    root: INFO
+    com.github.onlinemovieservice: DEBUG
 server:
   port: 8081
