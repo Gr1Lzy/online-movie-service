@@ -1,8 +1,12 @@
-FROM openjdk:11-jre-slim
+FROM maven:3.9.7 AS build
 WORKDIR /app
-COPY target/online-movie-service-0.0.1-SNAPSHOT.jar app.jar
-COPY .env .env
-RUN apt-get update && apt-get install -y dos2unix && dos2unix .env
-RUN apt-get install -y curl && curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs && npm install -g dotenv-cli
-EXPOSE 8081
-CMD ["dotenv", "-e", ".env", "java", "-jar", "app.jar"]
+COPY pom.xml /app
+RUN mvn dependency:resolve
+COPY . /app
+RUN mvn clean
+RUN mvn package -DskipTests -X
+
+FROM openjdk:17-alpine
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
