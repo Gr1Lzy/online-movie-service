@@ -9,6 +9,12 @@ phases:
       - REPOSITORY_URI=398882815413.dkr.ecr.eu-north-1.amazonaws.com/online-movie-repository
       - echo setting image tag...
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - echo Installing dependencies...
+      - yum install -y docker
+      - service docker start
+      - docker --version
+      - mvn --version
+      - java -version
 
   build:
     commands:
